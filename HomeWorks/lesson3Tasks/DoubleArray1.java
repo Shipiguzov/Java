@@ -14,7 +14,6 @@ public class DoubleArray1 {
                 doubleArrayOfNumbers[i][j] = (int) (Math.random() * (max - min + 1)) + min;
             }
         }
-
         System.out.println(Arrays.deepToString(doubleArrayOfNumbers));
         for (int i = 0; i < doubleArrayOfNumbers.length; i++) {
             //System.out.println(Arrays.toString(i));
