@@ -11,13 +11,13 @@ public class Exercise1 {
         В итоге в массиве будут только уникальные слова.
         Выход их программы по слову exit (его в массив не добавлять) или если массив заполнен
         Перед завершением программы, вывести получившийся массив в консоль */
-        int N = 5;
+        int n = 5;
         int i = 0;
         String inputWord;
-        String[] wordsArray = new String[N];
+        String[] wordsArray = new String[n];
         Scanner input = new Scanner(System.in);
 
-        Arrays.fill(wordsArray, "");
+        //Arrays.fill(wordsArray, "");
         do {
             boolean flag1 = true;
             System.out.println("Введите слово (для выхода - введите exit): ");
@@ -33,7 +33,7 @@ public class Exercise1 {
                 }
             }
             if (flag1) {
-                wordsArray[i] += inputWord;
+                wordsArray[i] = inputWord;
                 i++;
             }
         } while (i < wordsArray.length);
