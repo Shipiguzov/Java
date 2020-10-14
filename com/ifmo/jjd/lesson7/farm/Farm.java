@@ -4,7 +4,7 @@ final public class Farm {
     FarmAnimal[] farmAnimals = new FarmAnimal[10];
     Farmer farmer = new Farmer();
     private int resources = 5;
-    private int resourcesPerDay = 4;
+    private int resourcesPerDay = 2;
     private boolean emptyFarm = false;
 
 

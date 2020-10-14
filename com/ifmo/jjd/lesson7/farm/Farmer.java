@@ -13,13 +13,9 @@ final public class Farmer {
     }
 
     public int eatFarmAnimal(FarmAnimal animal) {
-        if (animal.isAlive() && animal.getResources() > 0) {
-            animal.takeWounds(animal.getHealth());
-            animal.aliveCheck();
-            System.out.println("Farmer ate " + animal.getName());
-            return animal.getWeight();
-        }
-        return 0;
+        animal.aliveCheck();
+        System.out.println("Farmer ate " + animal.getName());
+        return animal.getWeight();
     }
 
     public void chaseWildAnimal(WildAnimal animal) {

@@ -28,7 +28,7 @@ final public class MakeLists {
                         Farm.randomNumber(3, 4),
                         Farm.randomNumber(3, 4),
                         Farm.randomNumber(1, 3),
-                        1,
+                        0,
                         true
                 );
             case 4:

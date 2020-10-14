@@ -21,7 +21,7 @@ public class Application {
             System.out.println("Day " + dayNumber + " has passed.");
             System.out.println("There is " + farm.getResources() + " resurces  on farm");
             dayNumber++;
-            if (dayNumber >= 1000) {
+            if (dayNumber >= 10000) {
                 System.out.println("Farm will be forever");
                 break;
             }
