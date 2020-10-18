@@ -36,9 +36,9 @@ final public class Human {
 
     public static Human createRandomHuman() {
         return new Human(
-                Logger.name(Logger.random(1, 8)),
-                Logger.surname(Logger.random(1, 8)),
-                Logger.random(1970, 2020)
+                Random.name(Random.random(0, 7)),
+                Random.surname(Random.random(0, 7)),
+                Random.random(1970, 2020)
         );
     }
 

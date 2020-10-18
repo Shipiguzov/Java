@@ -2,9 +2,8 @@ package com.ifmo.jjd.exam1;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Objects;
 
-public class Abonnement implements AbonnementActions {
+public class Abonnement {
     private Human owner;
     private LocalDate registrationDate;
     private LocalDate expireDate;
@@ -17,37 +16,42 @@ public class Abonnement implements AbonnementActions {
     private int counterOfComing = 0;
 
     public Abonnement(Human owner, LocalDate registrationDate, LocalDate expireDate, String type) {
-        if (type == null || (!"ones".equals(type.trim().toLowerCase()) && !"day".equals(type.trim().toLowerCase()) && !"full".equals(type.trim().toLowerCase())))
+        if (type == null || (!Random.ones.equalsIgnoreCase(type.trim()) && !Random.day.equalsIgnoreCase(type.trim()) && !Random.full.equalsIgnoreCase(type.trim())))
             throw new IllegalArgumentException("Wrong type of aboniment");
-        this.owner = owner;
+        this.setOwner(owner);
         this.setRegistrationDate(registrationDate);
         this.setExpireDate(expireDate);
         switch (type.toLowerCase()) {
-            case "ones":
+            case Random.ones:
                 pool = true;
                 gym = true;
                 group = false;
                 beginWorkTime = LocalTime.of(8, 00);
                 endWorkTime = LocalTime.of(22, 00);
                 this.type = type;
-                return;
-            case "day":
+                break;
+            case Random.day:
                 pool = false;
                 gym = true;
                 group = true;
                 beginWorkTime = LocalTime.of(8, 00);
                 endWorkTime = LocalTime.of(16, 00);
                 this.type = type;
-                return;
-            case "full":
+                break;
+            case Random.full:
                 pool = true;
                 gym = true;
                 group = true;
                 beginWorkTime = LocalTime.of(8, 00);
                 endWorkTime = LocalTime.of(22, 00);
                 this.type = type;
-                return;
+                break;
         }
+    }
+
+    public void setOwner(Human owner) {
+        if (owner == null) throw new IllegalArgumentException("owner == null");
+        this.owner = owner;
     }
 
     public LocalDate getRegistrationDate() {
@@ -55,7 +59,7 @@ public class Abonnement implements AbonnementActions {
     }
 
     public void setRegistrationDate(LocalDate registrationDate) {
-        if (registrationDate.isAfter(Logger.getCurrentDateTime().toLocalDate()))
+        if (registrationDate.isAfter(Random.getCurrentDateTime().toLocalDate()))
             throw new IllegalArgumentException("Registration date in future");
         this.registrationDate = registrationDate;
     }

@@ -1,9 +1,7 @@
 package com.ifmo.jjd.exam1;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
 import java.util.Scanner;
 
 public class Application {
@@ -15,11 +13,11 @@ public class Application {
         //Abonnement currentAbonnement;
 
         // Заполняем массив абонементов случайными абонементами
-        for (int i = 0; i < Logger.random(50, 100); i++) {
+        for (int i = 0; i < Random.random(50, 100); i++) {
             fitness.addAboniment();
         }
-        LocalTime currentTime = Logger.getCurrentDateTime().toLocalTime();
-        LocalDate currentDate = Logger.getCurrentDateTime().toLocalDate();
+        LocalTime currentTime = Random.getCurrentDateTime().toLocalTime();
+        LocalDate currentDate = Random.getCurrentDateTime().toLocalDate();
         System.out.println(fitness.toString());
 
         // Основное тело программы
@@ -39,7 +37,7 @@ public class Application {
             numberOfAboniment = input.nextInt();
             if (numberOfAboniment < 0) break;
             System.out.println("Current abonimens: \n" + fitness.getAboniment(numberOfAboniment).toString());
-            System.out.println("Date of visit: " + Logger.getCurrentDateTime());
+            System.out.println("Date of visit: " + Random.getCurrentDateTime());
 
             //currentAboniment = fitness.getAboniment(numberOfAboniment).clone();
             if (fitness.getAboniment(numberOfAboniment) == null) {
@@ -57,7 +55,7 @@ public class Application {
             do {
                 System.out.println("Enter name of the zone (pool, gym, group):");
                 wishZone = input.next().trim().toLowerCase();
-            } while (!"pool".equals(wishZone) && !"gym".equals(wishZone) && !"group".equals(wishZone));
+            } while (!Random.pool.equals(wishZone) && !Random.gym.equals(wishZone) && !Random.group.equals(wishZone));
 
             // Проверка может ли абонемент войти в зону, которую хочет
             if (!fitness.accessToZone(fitness.getAboniment(numberOfAboniment), wishZone)) continue;

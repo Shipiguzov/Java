@@ -8,8 +8,8 @@ public interface FitnessAction {
     // проверяет работает ли фитнес в указанное время
     boolean fitnessWork(LocalTime time);
 
-    // случайно создает абонимент
-    Abonnement createRandomAboniment();
+   /* // случайно создает абонимент
+    static Abonnement createRandomAboniment();*/
 
     // добавляет абонимент в список
     void addAboniment();
