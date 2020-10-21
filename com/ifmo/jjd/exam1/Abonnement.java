@@ -16,13 +16,13 @@ public class Abonnement {
     private int counterOfComing = 0;
 
     public Abonnement(Human owner, LocalDate registrationDate, LocalDate expireDate, String type) {
-        if (type == null || (!Random.ones.equalsIgnoreCase(type.trim()) && !Random.day.equalsIgnoreCase(type.trim()) && !Random.full.equalsIgnoreCase(type.trim())))
+        if (type == null || (!Random.ONCE.equalsIgnoreCase(type.trim()) && !Random.DAY.equalsIgnoreCase(type.trim()) && !Random.FULL.equalsIgnoreCase(type.trim())))
             throw new IllegalArgumentException("Wrong type of aboniment");
         this.setOwner(owner);
         this.setRegistrationDate(registrationDate);
         this.setExpireDate(expireDate);
         switch (type.toLowerCase()) {
-            case Random.ones:
+            case Random.ONCE:
                 pool = true;
                 gym = true;
                 group = false;
@@ -30,7 +30,7 @@ public class Abonnement {
                 endWorkTime = LocalTime.of(22, 00);
                 this.type = type;
                 break;
-            case Random.day:
+            case Random.DAY:
                 pool = false;
                 gym = true;
                 group = true;
@@ -38,7 +38,7 @@ public class Abonnement {
                 endWorkTime = LocalTime.of(16, 00);
                 this.type = type;
                 break;
-            case Random.full:
+            case Random.FULL:
                 pool = true;
                 gym = true;
                 group = true;

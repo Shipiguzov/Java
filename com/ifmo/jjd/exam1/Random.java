@@ -2,16 +2,15 @@ package com.ifmo.jjd.exam1;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Month;
 
 public class Random {
-    public final static String pool = "pool";
-    public final static String gym = "gym";
-    public final static String group = "group";
-    public final static String ones = "once";
-    public final static String day = "day";
-    public final static String full = "full";
+    public final static String POOL = "pool";
+    public final static String GYM = "gym";
+    public final static String GROUP = "group";
+    public final static String ONCE = "once";
+    public final static String DAY = "day";
+    public final static String FULL = "full";
 
     public static LocalDateTime getCurrentDateTime() {
         return LocalDateTime.of(2020, Month.OCTOBER, 17, 14, 00, 00);
@@ -23,7 +22,7 @@ public class Random {
 
     public static String abonimentType() {
         int temp = random(0, 2);
-        String[] abonnementType = {ones, day, full};
+        String[] abonnementType = {ONCE, DAY, FULL};
         return abonnementType[temp];
     }
 

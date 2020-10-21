@@ -11,11 +11,11 @@ public class Zone implements ZoneActions {
 
     public Zone(String type) {
         switch (type) {
-            case Random.pool:
+            case Random.POOL:
                 this.pool = true;
-            case Random.gym:
+            case Random.GYM:
                 this.gym = true;
-            case Random.group:
+            case Random.GROUP:
                 this.group = true;
         }
         Arrays.fill(abonimentList, -1);
@@ -23,7 +23,7 @@ public class Zone implements ZoneActions {
     }
 
     public void setType(String type) {
-        if (type == null || (!Random.pool.equalsIgnoreCase(type.trim()) && !Random.gym.equalsIgnoreCase(type.trim()) && !Random.group.equalsIgnoreCase(type.trim())))
+        if (type == null || (!Random.POOL.equalsIgnoreCase(type.trim()) && !Random.GYM.equalsIgnoreCase(type.trim()) && !Random.GROUP.equalsIgnoreCase(type.trim())))
             throw new IllegalArgumentException("Wrong type of Zone");
         this.type = type;
     }

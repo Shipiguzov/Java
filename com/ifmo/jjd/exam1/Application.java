@@ -55,7 +55,7 @@ public class Application {
             do {
                 System.out.println("Enter name of the zone (pool, gym, group):");
                 wishZone = input.next().trim().toLowerCase();
-            } while (!Random.pool.equals(wishZone) && !Random.gym.equals(wishZone) && !Random.group.equals(wishZone));
+            } while (!Random.POOL.equals(wishZone) && !Random.GYM.equals(wishZone) && !Random.GROUP.equals(wishZone));
 
             // Проверка может ли абонемент войти в зону, которую хочет
             if (!fitness.accessToZone(fitness.getAboniment(numberOfAboniment), wishZone)) continue;

@@ -5,9 +5,9 @@ import java.time.LocalTime;
 import java.util.Arrays;
 
 public final class Fitness implements FitnessAction {
-    private Zone pool = new Zone(Random.pool);
-    private Zone gym = new Zone(Random.gym);
-    private Zone group = new Zone(Random.group);
+    private Zone pool = new Zone(Random.POOL);
+    private Zone gym = new Zone(Random.GYM);
+    private Zone group = new Zone(Random.GROUP);
     private LocalTime startWork = LocalTime.of(8, 00);
     private LocalTime endWork = LocalTime.of(22, 00);
     private Abonnement[] abonnementList = new Abonnement[1000];
@@ -21,7 +21,7 @@ public final class Fitness implements FitnessAction {
                         Human.createRandomHuman(),
                         temp,
                         temp,
-                        Random.ones
+                        Random.ONCE
                 ) {
                 };
             case 2:
@@ -29,7 +29,7 @@ public final class Fitness implements FitnessAction {
                         Human.createRandomHuman(),
                         temp,
                         temp.plusMonths(Random.random(2, 12)),
-                        Random.day
+                        Random.DAY
                 ) {
                 };
             case 3:
@@ -37,7 +37,7 @@ public final class Fitness implements FitnessAction {
                         Human.createRandomHuman(),
                         temp,
                         temp.plusMonths(Random.random(2, 12)),
-                        Random.full
+                        Random.FULL
                 ) {
                 };
         }
@@ -79,13 +79,13 @@ public final class Fitness implements FitnessAction {
     public boolean accessToZone(Abonnement abonnement, String zone) {
         boolean flag = true;
         switch (zone) {
-            case Random.pool:
+            case Random.POOL:
                 if (!abonnement.isPool()) flag = false;
                 break;
-            case Random.gym:
+            case Random.GYM:
                 if (!abonnement.isGym()) flag = false;
                 break;
-            case Random.group:
+            case Random.GROUP:
                 if (!abonnement.isGroup()) flag = false;
                 break;
         }
@@ -96,21 +96,21 @@ public final class Fitness implements FitnessAction {
     @Override
     public boolean addAbonnentToZone(int index, String zoneType) {
         switch (zoneType) {
-            case Random.pool:
+            case Random.POOL:
                 if (this.pool.checkFreeSpaceInZone()) {
                     this.pool.addAboniment(index);
                     System.out.println("Abonnement " + this.getAboniment(index).toString() + " add to " + zoneType);
                     getAboniment(index).addCounterOfComing();
                     return true;
                 }
-            case Random.gym:
+            case Random.GYM:
                 if (this.gym.checkFreeSpaceInZone()) {
                     this.gym.addAboniment(index);
                     System.out.println("Abonnement " + this.getAboniment(index).toString() + " add to " + zoneType);
                     getAboniment(index).addCounterOfComing();
                     return true;
                 }
-            case Random.group:
+            case Random.GROUP:
                 if (this.group.checkFreeSpaceInZone()) {
                     this.group.addAboniment(index);
                     System.out.println("Abonnement " + this.getAboniment(index).toString() + " add to " + zoneType);
