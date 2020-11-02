@@ -18,8 +18,8 @@ public class MapTask {
         System.out.println(newList);
         System.out.println("__________________________________");
 
-        // TODO:: дан список слов (words). Написать метод, который будет возвращать количество одинаковых слов с списке
-        //  в виде Map<String, Integer>, где String - слово и Integer - количество повторений
+        // дан список слов (words). Написать метод, который будет возвращать количество одинаковых слов с списке
+        // в виде Map<String, Integer>, где String - слово и Integer - количество повторений
 
         List<String> words = new ArrayList<>();
         words.add("may");
@@ -36,9 +36,9 @@ public class MapTask {
         System.out.println("____________________________");
 
 
-        // TODO:: дана мапа (customerMap).
-        //  Написать метод, который принимает на вход агрументы int from и int to и возвращает новую мапу,
-        //  в которую войдут все покупатели, возраст которых находится в диапазоне [from, to)
+        // дана мапа (customerMap).
+        // Написать метод, который принимает на вход агрументы int from и int to и возвращает новую мапу,
+        // в которую войдут все покупатели, возраст которых находится в диапазоне [from, to)
 
         HashMap<String, Customer> customerMap = new HashMap<>();
         customerMap.put("1", new Customer("Павел", "1", 23));
@@ -51,7 +51,7 @@ public class MapTask {
         System.out.println("___________________________________");
 
 
-        // TODO:: Задания по тексту (text). На каждый пункт - минимум один метод:
+        // Задания по тексту (text). На каждый пункт - минимум один метод:
         //  1. написать метод, принимающий на вход слово и возвращающий частоту встречаемости данного слова в тексте
         //  2. написать метод, который собирает все слова в группы по количеству букв:
         //  например, в одну группу попадут слова: 3 - [the, war, jar, get, met...], в другую 2 - [on, up, no, of...]
@@ -187,7 +187,7 @@ public class MapTask {
     }
 
     public static HashMap<String, Customer> getAge(HashMap<String, Customer> customerMap, int from, int to) {
-        // TODO:: дана мапа (customerMap).
+        // дана мапа (customerMap).
         //  Написать метод, который принимает на вход агрументы int from и int to и возвращает новую мапу,
         //  в которую войдут все покупатели, возраст которых находится в диапазоне [from, to)
         HashMap<String, Customer> newMap = new HashMap<>();
@@ -199,7 +199,7 @@ public class MapTask {
     }
 
     public static List<String> getCitizensFromCity(HashMap<String, String> citizenList, String city) {
-        // TODO:: написать статический метод, который приннимает на вход мапу (firstTaskMap) и город (city)
+        // написать статический метод, который приннимает на вход мапу (firstTaskMap) и город (city)
         //  и формирует список (List) логинов, которые соответствуют переданному городу
 
         List<String> tempList = new ArrayList<>();
@@ -210,7 +210,7 @@ public class MapTask {
     }
 
     public static Map<String, Integer> countEqualWords(List<String> list) {
-        // TODO:: дан список слов (words). Написать метод, который будет возвращать количество одинаковых слов с списке
+        // дан список слов (words). Написать метод, который будет возвращать количество одинаковых слов с списке
         //  в виде Map<String, Integer>, где String - слово и Integer - количество повторений
 
         Map<String, Integer> equalWords = new HashMap<>();
