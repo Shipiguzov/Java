@@ -36,6 +36,9 @@ public class ColouringShelf {
     }
 
     public void addColouringBook(ColouringBook... books) {
+        for (int i = 0; i < books.length; i++) {
+            addColouringBook(books[i]);
+        }
         System.out.println(Arrays.toString(books));
 
     }

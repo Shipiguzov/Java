@@ -2,7 +2,7 @@ package com.ifmo.jjd.lesson17.task.fortest.config;
 
 import com.ifmo.jjd.lesson17.task.dicontainer.marks.ConfigClass;
 
-@ConfigClass(file = "app.config", prefix = "mouse")
+@ConfigClass(file = "app.properties", prefix = "mouse")
 public class MouseConfig {
     private String mouseName;
     private int mouseSpeed;

@@ -2,7 +2,7 @@ package com.ifmo.jjd.lesson17.task.fortest.config;
 
 import com.ifmo.jjd.lesson17.task.dicontainer.marks.ConfigClass;
 
-@ConfigClass(file = "app.config", prefix = "cat")
+@ConfigClass(file = "app.properties", prefix = "cat")
 public class CatConfig {
     private String catName;
     private int catSpeed;

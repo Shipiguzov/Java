@@ -3,8 +3,8 @@ package com.ifmo.jjd.lesson17.reflection;
 import java.time.LocalDateTime;
 
 public class Message implements Comparable<Message>{
-    public String title;
-    public LocalDateTime created;
+    private String title;
+    private LocalDateTime created;
 
     public Message(String title) {
         this.title = title;

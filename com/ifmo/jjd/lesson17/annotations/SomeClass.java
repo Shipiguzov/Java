@@ -1,9 +1,9 @@
 package com.ifmo.jjd.lesson17.annotations;
 
-@Config(description = "Описание класса", version = 2)
+@Config(desc = "Описание класса", version = 2)
 public class SomeClass {
 
-    @Required // NotNull Min(2) Max(100)
+    @Required
     private String stringData;
 
     public String getStringData() {

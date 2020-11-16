@@ -3,46 +3,88 @@ package com.ifmo.jjd.lesson17.homework.reflection;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
 public class ReflectionGetFields {
 
     protected static String toStringFields(Object o) throws IllegalAccessException, NoSuchFieldException, NoSuchMethodException {
-        if (o == null) return "null";
         Class<?> classLink = o.getClass();
         StringBuilder fieldsOfObjectString = new StringBuilder();
         if (isStringClassNamePrimitive(classLink)) return fieldsOfObjectString.append(o).append(" ").toString();
-        else if (classLink.isArray()) return fieldsOfObjectString.append(arrayManufacturing(o)).toString();
-        else return fieldsOfObjectString.append(manufactingOfNonPrimitiveObject(o)).toString();
+        else if (classLink.isArray()) return arrayManufacturing(o);
+        fieldsOfObjectString.append(manufactingOfNonPrimitiveObject(o));
+        /*else if (!isStringClassNamePrimitive(classLink.getSuperclass())) {
+            Field[] fieldsOfObjectSuperclass;
+            fieldsOfObjectSuperclass = classLink.getSuperclass().getDeclaredFields();
+            for (Field fiedldofObjectSuperclass : fieldsOfObjectSuperclass) {
+                System.out.println();
+            }
+            createSuperclassObject(o);
+            fieldsOfObjectString.append(toStringFields(classLink.getSuperclass()));
+        }*/
+        return fieldsOfObjectString.toString();
+    }
+
+    private static String getFieldName(Field fieldOfObject) {
+        return fieldOfObject.getName();
+    }
+
+    private static Constructor getClassConstructor(Object inputObject) throws NoSuchMethodException {
+        Constructor constructorLink = inputObject.getClass().getConstructor();
+        return constructorLink;
+    }
+
+    private static Object getValueClassField(Object inputObject, String fieldName) throws NoSuchFieldException, IllegalAccessException {
+        Class classLink = inputObject.getClass();
+        Field field = classLink.getDeclaredField(fieldName);
+        return field.get(inputObject);
+
+    }
+
+    private static HashMap<String, Object> getListofFields(Object inputObject) {
+        HashMap<String, Object> hashMapOfFields = new HashMap<>();
+        Field[] fields = inputObject.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            String fieldName = getFieldName(field);
+            try {
+                Object valueOfField = getValueClassField(inputObject, fieldName);
+                hashMapOfFields.put(fieldName, valueOfField);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return hashMapOfFields;
+    }
+
+    private static Object createSuperclassObject(Object inputObject) throws NoSuchMethodException {
+        Class classLink = inputObject.getClass();
+        Constructor classConstructor = getClassConstructor(inputObject);
+        HashMap<String, Object> mapFields = getListofFields(inputObject);
+        System.out.println(classConstructor);
+        System.out.println(mapFields);
+        return null;
     }
 
     private static Boolean isStringClassNamePrimitive(Class<?> classLink) {
-        String stringClassName = classLink.getSimpleName();//Name().split("\\.");
+        String stringClassName = classLink.getName();
+        String className = stringClassName.substring(stringClassName.lastIndexOf(".") + 1);
         for (PrimitiveClasses value : PrimitiveClasses.values()) {
-            if (value.toString().equalsIgnoreCase(stringClassName)) return true;
+            if (value.toString().equalsIgnoreCase(className)) return true;
         }
         return false;
     }
 
-    // TODO: сделать обработку массива из объектов типа Books
-    private static String arrayManufacturing(Object inputObject) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException {
+    private static String arrayManufacturing(Object o) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("[[");
-        for (int i = 0; i < Array.getLength(inputObject); i++) {
-            if (!Objects.nonNull(Array.get(inputObject, i))) {
-                stringBuilder.append("null").append(" | ");
-                continue;
-            }
-            if (isStringClassNamePrimitive(Array.get(inputObject, i).getClass())) {
-                stringBuilder.append(i).append(" : ").append(Array.get(inputObject, i)).append(" | ");
-                continue;
-            }
-            Field[] fields = Array.get(inputObject, i).getClass().getDeclaredFields();
-            stringBuilder.append(getStringFields(fields, Array.get(inputObject, i)));
+        stringBuilder.append("[");
+        for (int i = 0; i < Array.getLength(o); i++) {
+            if (!isStringClassNamePrimitive(Array.get(o, i).getClass())) toStringFields(Array.get(o, i).getClass());
+            if (Objects.nonNull(Array.get(o, i))) stringBuilder.append(toStringFields(Array.get(o, i)));
         }
-        stringBuilder.append("]]");
+        stringBuilder.append("]");
         return stringBuilder.toString();
     }
 
@@ -50,46 +92,11 @@ public class ReflectionGetFields {
         Class classLink = inputObject.getClass();
         StringBuilder fieldsOfObjectString = new StringBuilder();
         Field[] fieldsOfObject = classLink.getDeclaredFields();
-        fieldsOfObjectString.append(getStringFields(fieldsOfObject, inputObject));
-        /*for (Field field : fieldsOfObject) {
+        for (Field field : fieldsOfObject) {
             field.setAccessible(true);
-            if (!isStringClassNamePrimitive(field.getClass())) {
-                fieldsOfObjectString.append(field.getName()).append(" : ").append(toStringFields(field.get(inputObject))).append(" | ");
-                continue;
-            }
             if (field.getType().isArray()) fieldsOfObjectString.append(arrayManufacturing(field.get(inputObject)));
-        }*/
-        if (isSuperClass(classLink)) {
-            fieldsOfObject = classLink.getFields();
-            fieldsOfObjectString.append(getStringFields(fieldsOfObject, inputObject));
+            else fieldsOfObjectString.append(field.getName()).append(": ").append(field.get(inputObject)).append(" | ");
         }
-        return fieldsOfObjectString.toString();
-    }
-
-    public static String getStringFields(Field[] fields, Object inputObject) throws IllegalAccessException, NoSuchFieldException, NoSuchMethodException {
-        StringBuilder fieldsOfObjectString = new StringBuilder();
-        for (Field field : fields) {
-            field.setAccessible(true);
-            if (!Objects.nonNull(field.get(inputObject))) {
-                fieldsOfObjectString.append(field.getName()).append(" : ").append("null").append(" | ");
-                continue;
-            }
-            if (isStringClassNamePrimitive(field.get(inputObject).getClass())) {
-                fieldsOfObjectString.append(field.getName()).append(" : ").append(toStringFields(field.get(inputObject))).append(" | ");
-                continue;
-            }
-            if (field.getType().isArray()) {
-                Object temp = field.get(inputObject);
-                fieldsOfObjectString.append(arrayManufacturing(field.get(inputObject)));
-                continue;
-            }
-            fieldsOfObjectString.append(field.getName()).append(" [ ").append(toStringFields(field.get(inputObject))).append("] | ");
-        }
-        return fieldsOfObjectString.toString();
-    }
-
-    public static boolean isSuperClass(Class classLink) {
-        if (Objects.nonNull(classLink.getSuperclass())) return true;
-        return false;
+        return null;
     }
 }

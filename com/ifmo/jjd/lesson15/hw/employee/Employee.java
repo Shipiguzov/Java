@@ -57,8 +57,6 @@ public class Employee {
         this.age = age;
     }
 
-    // TODO: конструктор, геттеры и сеттеры
-
     private int randomNumber(int minRange, int maxRange) {
         return (int) (Math.random() * (maxRange - minRange + 1) + minRange);
     }
@@ -77,7 +75,7 @@ public class Employee {
                     companies[(int) (Math.random() * 6)],
                     (int) (Math.random() * (1000 - 200 + 1) + 200),
                     (int) (Math.random() * (60 - 21 + 1) + 21))
-        ); // TODO: объекты создавать с рандомными значениями. Возраст от 21 до 60 и не забудьте про зп
+        );
         }
         return employees;
     }

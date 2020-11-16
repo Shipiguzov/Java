@@ -21,4 +21,10 @@ public class TextMessage extends Message implements Serializable {
         System.out.println(prefix + " " + getTitle());
     }
 
+    @Override
+    public String toString() {
+        return "TextMessage{" +
+                "text='" + text + '\'' +
+                '}';
+    }
 }

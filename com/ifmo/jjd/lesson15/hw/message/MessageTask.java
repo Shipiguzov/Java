@@ -67,18 +67,20 @@ public class MessageTask {
             uniqueMessagesList.add(message);
         }
         return uniqueMessagesList;
+        //System.out.println(new HashSet<>(messageList).size());
     }
 
-    public static LinkedHashSet<Message> uniqueMessagesInOriginalOrder(List<Message> messageList) {
+    public static List<Message> uniqueMessagesInOriginalOrder(List<Message> messageList) {
         // вернуть только неповторяющиеся сообщения и в том порядке,
         //  в котором они встретились в первоначальном списке
         //  Например, было: [{URGENT, 4}, {HIGH, 9}, {LOW, 3}, {HIGH, 9}]
         //  на выходе: [{URGENT, 4}, {HIGH, 9}, {LOW, 3}]
-        LinkedHashSet<Message> linkedHashSet = new LinkedHashSet<>();
+        /*LinkedHashSet<Message> linkedHashSet = new LinkedHashSet<>();
         for (Message message : messageList) {
             linkedHashSet.add(message);
         }
-        return linkedHashSet;
+        return new ArrayList<>(linkedHashSet*/
+        return new ArrayList<>(new LinkedList<>(messageList));
     }
 
     public static List<Message> removeEach(List<Message> messageList, MessagePriority priority) {

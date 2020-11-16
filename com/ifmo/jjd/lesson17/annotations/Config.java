@@ -9,8 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Config {
     // параметры аннотаций:
-    // String, примитивы (не обёртки), перечисления(enum)
-    String description(); // без значения по умолчанию
-    int version() default 1; // при аннотировании можно не указывать. параметр со значнием по умолчанию
-
+    // String, примитивы (не обертки), перечисления(enum)
+    String desc(); // без значения по умолчанию
+    int version() default 1; // со значением по умолчанию
 }

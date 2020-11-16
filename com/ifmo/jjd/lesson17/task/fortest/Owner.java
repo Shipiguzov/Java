@@ -12,6 +12,14 @@ public class Owner {
     private String name;
 
     public Owner() {
-        this.name = ownerConfig.getOwnerName();
+        //this.name = ownerConfig.getOwnerName();
+    }
+
+    public OwnerConfig getOwnerConfig() {
+        return ownerConfig;
+    }
+
+    public void setName() {
+        ownerConfig.getOwnerName();
     }
 }

@@ -1,7 +1,6 @@
 package com.ifmo.jjd.lesson17.homework.reflection;
 
 import com.ifmo.jjd.lesson17.reflection.Message;
-import com.ifmo.jjd.lesson17.reflection.TextMessage;
 import com.ifmo.jjd.lesson6.Author;
 import com.ifmo.jjd.lesson6.ColouringBook;
 import com.ifmo.jjd.lesson6.ColouringShelf;
@@ -28,8 +27,8 @@ public class ReflectionApp {
         flowers.setPageCount(154);
         flowers.setAuthor(author2);
         shelf.addColouringBook(dogs, flowers, dogs, dogs, dogs, dogs, flowers);
+        Message message = new Message("bla-bla-bla");
         Integer[] arrayInt = {1, 5, 3, 6, 7};
-        TextMessage textMessage = new TextMessage("Bla-bla-bla");
         System.out.println("------------------------------------------------------");
         try {
             System.out.println(ReflectionGetFields.toStringFields(shelf));

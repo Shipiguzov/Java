@@ -5,9 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-//
 // @Target({ElementType.METHOD, ElementType.FIELD})
-@Target(ElementType.FIELD) // данная аннотация работает для полей
-@Retention(RetentionPolicy.RUNTIME) // аннотация сохраняется на момент выполнения программы (когда будет сохранена аннотация)
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface Required {
 }

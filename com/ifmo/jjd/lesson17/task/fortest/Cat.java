@@ -5,6 +5,7 @@ import com.ifmo.jjd.lesson17.task.dicontainer.marks.RequiredField;
 import com.ifmo.jjd.lesson17.task.fortest.config.CatConfig;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 @RequiredClass
 public class Cat {
@@ -19,8 +20,17 @@ public class Cat {
     private ArrayList<Mouse> mice = new ArrayList<>(20);
 
     public Cat() {
-        name = catConfig.getCatName();
-        speed = catConfig.getCatSpeed();
+        /*name = catConfig.getCatName();
+        speed = catConfig.getCatSpeed();*/
+    }
+
+    public void setName() {
+        this.name = this.catConfig.getCatName();
+    }
+
+    public void setSpeed() {
+        Random temp = new Random();
+        this.speed = temp.nextInt(this.catConfig.getCatSpeed());
     }
 
     public void catchMouse(Mouse mouse) {
