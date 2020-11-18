@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
  * @version 1.1
  */
 
-public class IOlesson {
+public class IOLesson {
     public static void main(String[] args) {
         // пакеты IO / NIO
         // IO предоставляет возможность передавать данные в виде последовательности byte либо последовательности char

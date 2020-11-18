@@ -1,5 +1,6 @@
 package com.ifmo.jjd.lesson17.task.fortest;
 
+import com.ifmo.jjd.lesson17.task.dicontainer.AnnotationService;
 import com.ifmo.jjd.lesson17.task.dicontainer.marks.RequiredClass;
 import com.ifmo.jjd.lesson17.task.dicontainer.marks.RequiredField;
 import com.ifmo.jjd.lesson17.task.fortest.config.CatConfig;
@@ -35,12 +36,20 @@ public class Cat {
 
     public void catchMouse(Mouse mouse) {
         if (speed < mouse.getSpeed()) {
-            System.out.println(mouse.getName() + " убежал от " + name);
+            AnnotationService.println(mouse.getName() + " убежал от " + name);
             return;
         }
         mice.add(mouse);
-        System.out.println(name + " поймал " + mouse.getName());
-
+        AnnotationService.println(name + " поймал " + mouse.getName());
     }
 
+    @Override
+    public String toString() {
+        return "Cat{" +
+                "name='" + name + '\'' +
+                ", speed=" + speed +
+                ", owner=" + owner +
+                ", mice=" + mice +
+                '}';
+    }
 }

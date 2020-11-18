@@ -6,12 +6,15 @@ import com.ifmo.jjd.lesson17.task.fortest.config.MouseConfig;
 import com.ifmo.jjd.lesson17.task.fortest.config.OwnerConfig;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Application {
     public static void main(String[] args) {
         Set<Class> classes = new HashSet<>();
+        List container = new ArrayList();
         classes.add(Cat.class);
         classes.add(Mouse.class);
         classes.add(Owner.class);
@@ -19,11 +22,20 @@ public class Application {
         classes.add(MouseConfig.class);
         classes.add(OwnerConfig.class);
 
-        DIContainer diContainer = new DIContainer(classes);
+        DIContainer diContainer = null;
         try {
-            diContainer.run();
-        } catch (IllegalAccessException | NoSuchMethodException | InstantiationException | InvocationTargetException e) {
+            diContainer = new DIContainer(classes);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+        Cat cat = diContainer.getObject("cat");
+        Mouse mouse = diContainer.getObject("mouse");
+        cat.catchMouse(mouse);
     }
 }

@@ -15,15 +15,18 @@ import java.util.*;
 
 public final class DIContainer implements DIInterfaces {
     Set<Class> classesSet = new HashSet<>();
-    Set<Object> container = new HashSet<>();
+    List<Object> container = new ArrayList<>();
+    String nameOfLeaver = "mouse";
+    String nameOfCatcher = "cat";
 
     /**
      * Constructor create a new DIContainer with set of class links
      *
      * @param classesSet set that pull into this.classesSet
      */
-    public DIContainer(Set<Class> classesSet) {
+    public DIContainer(Set<Class> classesSet) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         this.setClassesSet(classesSet);
+        this.run();
     }
 
     /**
@@ -39,6 +42,10 @@ public final class DIContainer implements DIInterfaces {
         this.classesSet.addAll(classesSet);
     }
 
+    public List<Object> getContainer() {
+        return container;
+    }
+
     public void run() throws IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException {
         for (Class aClass : classesSet) {
             if (checkRequiredClassAnnotation(aClass)) {
@@ -46,8 +53,6 @@ public final class DIContainer implements DIInterfaces {
                 continue;
             }
         }
-        getCat(getObject("cat")).catchMouse(getMouse(getObject("mouse")));
-        AnnotationService.println(container.toString());
     }
 
     @Override
@@ -168,21 +173,10 @@ public final class DIContainer implements DIInterfaces {
     }
 
     @Override
-    public Object getObject(String className) {
+    public <T> T getObject(String className) {
         for (Object o : container) {
-            if (className.equalsIgnoreCase(o.getClass().getSimpleName())) return o;
+            if (className.equalsIgnoreCase(o.getClass().getSimpleName())) return (T) o;
         }
         return null;
     }
-
-    @Override
-    public Cat getCat(Object o) {
-        return (Cat) o;
-    }
-
-    @Override
-    public Mouse getMouse(Object o) {
-        return (Mouse) o;
-    }
-
 }
