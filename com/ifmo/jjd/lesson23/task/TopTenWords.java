@@ -1,7 +1,5 @@
 package com.ifmo.jjd.lesson23.task;
 
-import com.ifmo.jjd.lesson6.additionalTask.Tree;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -37,8 +35,7 @@ public class TopTenWords {
                 //.limit(10)
                 .forEach(System.out::println);*/
 
-        Map<String, Long> map = Files.lines(Paths.get("sourses/task23.txt"))
-                .flatMap(str -> Arrays.stream(str.split(" ")))
+        Map<String, Long> map = Arrays.stream(Files.readString(Paths.get("sourses/task23.txt")).split(" "))
                 .collect(Collectors.groupingBy(
                         Function.identity(),
                         TreeMap::new,

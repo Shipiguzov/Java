@@ -9,9 +9,6 @@ public class Account {
         this.balance = balance;
     }
 
-    // TODO: добавить геттеры и сеттеры
-
-
     public String getNumber() {
         return number;
     }
