@@ -4,7 +4,9 @@ import com.ifmo.jjd.lesson22.Course;
 
 import com.ifmo.jjd.lesson22.Course;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -186,5 +188,37 @@ public class StreamAPI {
 
         System.out.println(Arrays.deepToString(stringsMap));
         System.out.println(Arrays.toString(stringsFlatMap));
+
+        // Вставка про паттерн Observer (далее)
+        integerStream = Stream.of(-6, 0, 0, 81, -6, 1, 0, -6, 7, -6);
+        /*integerStream.forEach(integer -> System.out.println(100 / integer));
+        integerStream.forEach(integer -> {
+            try {
+                System.out.println(100 / integer);
+            } catch (ArithmeticException e) {
+                e.printStackTrace();
+            }
+        });*/
+        integerStream.forEach(wrapper(integer -> System.out.println("div " + 100 / integer)));
+        integerStream.forEach(wrapper(integer -> {
+            try {
+                someVoid(integer);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }));
+    }
+
+    private static void someVoid(int num) throws IOException {}
+
+    private static Consumer<Integer> wrapper(Consumer<Integer> consumer) {
+        return integer -> {
+            try {
+                consumer.accept(integer);
+            } catch (ArithmeticException e) {
+                //System.out.println("ArithmeticException");
+                e.printStackTrace();
+            }
+        };
     }
 }

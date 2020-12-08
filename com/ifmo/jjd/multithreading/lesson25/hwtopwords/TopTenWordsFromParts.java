@@ -10,7 +10,7 @@ public class TopTenWordsFromParts {
         ProcessingText text = new ProcessingText(filePath);
 
         text.getTextFromFile();
-        System.out.println(text.getMap() + "\n\n");
+        //System.out.println(text.getMap() + "\n\n");
         ArrayList<Thread> threadArrayList = new ArrayList<>();
         // создание Runnable для потоков с описанием интерфейса run()
         Runnable runTop = () -> {
@@ -34,6 +34,7 @@ public class TopTenWordsFromParts {
                 e.printStackTrace();
             }
         }
+        text.sortingResultMap(10);
         System.out.println(text.getResult());
 
         //System.out.println(Runtime.getRuntime().availableProcessors());

@@ -1,13 +1,11 @@
 package com.ifmo.jjd.lesson7.homewwork1;
 
 public class School {
-    final private String name;
-    final private Teacher[] teacherList;
-    final private Student[] studentslist;
+    private Teacher[] teacherList;
+    private Student[] studentslist;
     Director director;
 
-    public School(String name, Director director, Teacher[] teacherList, Student[] studentslist) {
-        this.name = name;
+    public School(Director director, Teacher[] teacherList, Student[] studentslist) {
         this.teacherList = teacherList;
         this.studentslist = studentslist;
         this.setDirector(director);

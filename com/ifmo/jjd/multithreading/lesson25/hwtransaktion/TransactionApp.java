@@ -3,28 +3,32 @@ package com.ifmo.jjd.multithreading.lesson25.hwtransaktion;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class TransactionApp {
     public static void main(String[] args) {
 
         Bank bank = new Bank();
         bank.makeAccountList();
-        int srcID = 0;
-        int dstID = 0;
-        int money = 0;
+        List<Integer> accountIDs = new ArrayList<>();
+        Random random = new Random();
+        for (Account account : bank.accounts) {
+            accountIDs.add(account.getId());
+        }
         while (true) {
-            BufferedReader inputFromConsole = new BufferedReader(new InputStreamReader(System.in));
-            try {
-                System.out.println("Transaction from: ");
-                srcID = Integer.parseInt(inputFromConsole.readLine());
-                System.out.println("Transaction to: ");
-                dstID = Integer.parseInt(inputFromConsole.readLine());
-                System.out.println("Money: ");
-                money = Integer.parseInt(inputFromConsole.readLine());
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
+            //BufferedReader inputFromConsole = new BufferedReader(new InputStreamReader(System.in));
+            synchronized (bank.accounts) {
+                bank.transferMoney(bank.getAccount(accountIDs.get(random.nextInt(accountIDs.size()))),
+                        bank.getAccount(accountIDs.get(random.nextInt(accountIDs.size()))),
+                        random.nextInt(1000));
             }
-            bank.transferMoney(bank.getAccount(srcID), bank.getAccount(dstID), money);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

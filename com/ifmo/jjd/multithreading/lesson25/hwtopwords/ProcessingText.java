@@ -1,6 +1,5 @@
 package com.ifmo.jjd.multithreading.lesson25.hwtopwords;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -34,26 +33,43 @@ public class ProcessingText {
         this.filePath = filePath;
     }
 
+
     /**
-     * Method get a map, calculate top2 of common words and put it to result map
+     * Method sorting result map and cut it to number
+     * @param number how many words will be in result map (TopNumberWords)
+     */
+    public void sortingResultMap(int number) {
+        result = result.entrySet().stream()
+                .sorted((o1, o2) -> o2.getValue().compareTo(o1.getValue()))
+                .limit(number)
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue
+                ));
+    }
+
+    /**
+     * Method get a map and put it to result map
+     *
      * @param inputMap - piece of text that this method will parse.
      */
     public void processingTextPart(Map<String, Long> inputMap) {
+        Map<String, Long> map = inputMap.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue
+                ));
+        System.out.println(inputMap.size() + " words in part");
         synchronized (result) {
-            Map<String, Long> map = inputMap.entrySet().stream()
-                    .sorted((o1, o2) -> o2.getValue().compareTo(o1.getValue()))
-                    .limit(2)
-                    .collect(Collectors.toMap(
-                            Map.Entry::getKey,
-                            Map.Entry::getValue
-                    ));
-            System.out.println(inputMap.size() + " words in part");
-            this.result.putAll(map);
+            for (Map.Entry<String, Long> entry : map.entrySet()) {
+                result.put(entry.getKey(), result.getOrDefault(entry.getKey() + result.get(entry.getKey()), entry.getValue()));
+            }
         }
     }
 
     /**
      * Method split this.map into a pieces to give it to treads
+     *
      * @return map with blockSize or less
      */
     public Map<String, Long> getPartMap() {
@@ -73,9 +89,8 @@ public class ProcessingText {
     }
 
     /**
-     * Method get a text from file this.filePath and calculate a blocksize for every thread (total will be 6 threads.
+     * Method get a text from file this.filePath and calculate a blocksize for every thread (total will be 6 threads).
      * Read text will be store in this.map
-     *
      */
     public void getTextFromFile() {
         try {
@@ -88,8 +103,7 @@ public class ProcessingText {
             ioException.printStackTrace();
         }
         map.remove("");
-        if (map.size() - (map.size() / 5 * 5) > 20) blockSize = map.size() / 5;
-        else blockSize = map.size() / 5 - (map.size() / 5 / 6);
+        blockSize = map.size() / 5 - (map.size() / 5 / 6);
         System.out.println("Total words: " + map.size());
     }
 }

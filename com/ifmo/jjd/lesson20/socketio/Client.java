@@ -1,6 +1,5 @@
 package com.ifmo.jjd.lesson20.socketio;
 
-import java.io.IOException;
 import java.net.Socket;
 import java.util.Properties;
 import java.util.Scanner;
@@ -8,7 +7,7 @@ import java.util.Scanner;
 public class Client {
 
     public static void main(String[] args) {
-        Properties properties = null;
+        Properties properties;
         properties = Connection.getPropertiesForConnection();
         try {
             new Client(properties.getProperty("ip"), Integer.valueOf(properties.getProperty("port"))).start();

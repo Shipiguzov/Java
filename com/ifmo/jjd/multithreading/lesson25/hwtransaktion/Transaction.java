@@ -13,11 +13,13 @@ public class Transaction implements Runnable {
 
     @Override
     public void run() {
-        // TODO перевод денежных средств со счета src на счет dst
+        //  перевод денежных средств со счета src на счет dst
         //  в количестве money
+        if (src.getBalance() < money) System.out.println("Account " + src.getId()
+                + "don't have enough money (" + money + ")");
         src.setBalance(src.getBalance() - money);
         dst.setBalance(dst.getBalance() + money);
         System.out.println("Money " + money + " transfered from " + src.getId() + " to " + dst.getId());
-        System.out.println("New balance source acount " + src.getBalance() + ". New balance destination account " + dst.getBalance());
+        System.out.println("New balance source account " + src.getBalance() + ". New balance destination account " + dst.getBalance());
     }
 }

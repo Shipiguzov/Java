@@ -19,7 +19,7 @@ public class ColouringBook extends Book{
     protected ColouringBook clone() {
         ColouringBook that = new ColouringBook(this.getTitle(), this.getPageCount(), this.picsCount);
         //that.setAuthor(this.getAuthor()); ссылка на author
-        that.setAuthor(new Author( // создвне нового экземпляра Author
+        that.setAuthor(new Author( // создание нового экземпляра Author
                 this.getAuthor().getName(),
                 this.getAuthor().getSurname()
                 ));

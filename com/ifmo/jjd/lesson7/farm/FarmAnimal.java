@@ -72,4 +72,13 @@ public class FarmAnimal
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "FarmAnimal{" +
+                ", name=" + name +
+                " health=" + health +
+                ", speed=" + speed +
+                '}';
+    }
 }

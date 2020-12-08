@@ -1,6 +1,6 @@
 package com.ifmo.jjd.lesson7.homewwork1;
 
-final public class Director extends Human {
+public class Director extends Human {
 
     private boolean stoplesson = true;
 
