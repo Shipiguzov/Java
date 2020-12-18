@@ -10,6 +10,7 @@ public class Message implements Serializable {
     private String sender;
     private LocalDateTime time;
     private boolean isConnected = true;
+    private final static long serialVersionUID = 1L;
 
     public Message(String sender, boolean isConnected) {
         this.sender = sender;

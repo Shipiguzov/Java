@@ -11,16 +11,11 @@ import java.util.concurrent.Semaphore;
 
 public class Server {
 
-    private final int PORT = 8090;
     private CopyOnWriteArrayList<Connection> accountList;
     private LinkedBlockingQueue<Message> messages;
 
     public static void main(String[] args) {
-        try {
-            new Server().start();
-        } catch (IOException | ClassNotFoundException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        new Server().start();
     }
 
     private Server() {
@@ -28,76 +23,97 @@ public class Server {
         messages = new LinkedBlockingQueue<>();
     }
 
-    private void start() throws IOException, ClassNotFoundException, InterruptedException {
+    private void start() {
         Thread.currentThread().setName("GettingMessageThread");
-        Service.println("Server started");
-        new Thread(new WaitClientThread()).start();
-        while (true) {
-            if (!Server.this.messages.isEmpty()) sendMessageToClientList();
-        }
-    }
-
-    private void sendMessageToClientList() throws IOException, InterruptedException {
-        Message message = Server.this.messages.take();
-        for (Connection connection : Server.this.accountList) {
-            if (!connection.getAccountName().equalsIgnoreCase(message.getSender())) {
-                connection.sendMessage(message);
-                System.out.println("Message sent to " + connection.getAccountName());
+        System.out.println("Server started");
+        new Thread(new SendMessageToClientList()).start();
+        Properties properties = Service.getPropertiesFromFile("Server.properties");
+        try (ServerSocket serverSocket = new ServerSocket(Integer.parseInt(properties.getProperty("port")))) {
+            System.out.println("Server wait for clients");
+            while (true) {
+                Socket socket = serverSocket.accept();
+                Connection connection = new Connection(socket);
+                connection.setAccountName("default");
+                new Thread(new ClientThread(connection)).start();
             }
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
         }
     }
 
-    private class ProcessingMessage implements Runnable {
-
-        private Message message;
-        private Connection connection;
-
-        private ProcessingMessage(Connection connection, Message message) {
-            this.connection = connection;
-            this.message = message;
-        }
+    private class SendMessageToClientList implements Runnable {
 
         @Override
         public void run() {
-            if (message.isConnected()) {
-                if ("default".equalsIgnoreCase(connection.getAccountName())) {
-                    connection.setAccountName(message.getSender());
-                }
-                synchronized (Server.this.messages) {
-                    try {
-                        Server.this.messages.put(message);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+            while (true) {
+                Message message;
+                try {
+                    message = Server.this.messages.take();
+                    for (Connection connection : Server.this.accountList) {
+                        if (!connection.getAccountName().equalsIgnoreCase(message.getSender())) {
+                            connection.sendMessage(message);
+                            System.out.println("Message sent to " + connection.getAccountName());
+                        }
                     }
+                } catch (InterruptedException | IOException e) {
+                    e.printStackTrace();
                 }
-                Service.println(message.toString() + " added to message list. Account " +
-                        connection.getAccountName() + " added to account list");
-                System.out.println(Server.this.messages.size());
-            } else {
-                Server.this.accountList.remove(connection);
-                Service.println("Account " + connection.getAccountName() + " disconnected");
+
             }
         }
     }
 
-    private class WaitClientThread implements Runnable {
+//    private class ProcessingMessage implements Runnable {
+//
+//        private Message message;
+//        private Connection connection;
+//
+//        private ProcessingMessage(Connection connection, Message message) {
+//            this.connection = connection;
+//            this.message = message;
+//        }
+//
+//        @Override
+//        public void run() {
+//            if (message.isConnected()) {
+//                if ("default".equalsIgnoreCase(connection.getAccountName())) {
+//                    connection.setAccountName(message.getSender());
+//                }
+//                synchronized (Server.this.messages) {
+//                    try {
+//                        Server.this.messages.put(message);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                Service.println(message.toString() + " added to message list. Account " +
+//                        connection.getAccountName() + " added to account list");
+//                System.out.println(Server.this.messages.size());
+//            } else {
+//                Server.this.accountList.remove(connection);
+//                Service.println("Account " + connection.getAccountName() + " disconnected");
+//            }
+//        }
+//    }
 
-        @Override
-        public void run() {
-            Thread.currentThread().setName("WaitClientThread");
-            try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-                Service.println("Server wait for clients");
-                while (true) {
-                    Socket socket = serverSocket.accept();
-                    Connection connection = new Connection(socket);
-                    connection.setAccountName("default");
-                    new Thread(new ClientThread(connection)).start();
-                }
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        }
-    }
+//    private class WaitClientThread implements Runnable {
+//
+//        @Override
+//        public void run() {
+//            Thread.currentThread().setName("WaitClientThread");
+//            try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+//                Service.println("Server wait for clients");
+//                while (true) {
+//                    Socket socket = serverSocket.accept();
+//                    Connection connection = new Connection(socket);
+//                    connection.setAccountName("default");
+//                    new Thread(new ClientThread(connection)).start();
+//                }
+//            } catch (IOException ioException) {
+//                ioException.printStackTrace();
+//            }
+//        }
+//    }
 
     private class ClientThread implements Runnable {
 
@@ -112,9 +128,29 @@ public class Server {
             Server.this.accountList.addIfAbsent(connection);
             while (true) {
                 try {
-                    new Thread(new ProcessingMessage(this.connection, connection.readMessage())).start();
-                } catch (IOException | ClassNotFoundException ioException) {
-                    ioException.printStackTrace();
+                    Message message = connection.readMessage();
+                    if (message.isConnected()) {
+                        if ("default".equalsIgnoreCase(connection.getAccountName())) {
+                            connection.setAccountName(message.getSender());
+                        }
+                        try {
+                            Server.this.messages.put(message);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println(message + " added to message list. Account " +
+                                connection.getAccountName() + " added to account list");
+                    } else {
+                        Server.this.accountList.remove(connection);
+                        System.out.println("Account " + connection.getAccountName() + " disconnected");
+                    }
+                } catch (IOException ioException) {
+                    //ioException.printStackTrace();
+                    System.out.println("Client " + connection.getAccountName() + " disconnected");
+                    accountList.remove(connection);
+                    break;
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
             }
         }

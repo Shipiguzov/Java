@@ -4,13 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Properties;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Client {
 
     private String accountName = "default";
-    private final String IP = "127.0.0.1";
-    private final int PORT = 8090;
     private Connection connection;
 
     private Client() {
@@ -22,9 +21,10 @@ public class Client {
     }
 
     private void start() {
-        Service.println("Client started");
+        System.out.println("Client started");
+        Properties properties = Service.getPropertiesFromFile("Client.properties");
         setAccountName();
-        try (Connection connection = new Connection(new Socket(IP, PORT))) {
+        try (Connection connection = new Connection(new Socket(properties.getProperty("ip"), Integer.parseInt(properties.getProperty("port"))))) {
             this.connection = connection;
             Thread receiveThread = new Thread(new ReceiveMessageFromServer());
             receiveThread.start();
@@ -37,22 +37,21 @@ public class Client {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                synchronized (connection) {
-                    try {
-                        if ("exit".equalsIgnoreCase(text)) {
-                            Client.this.connection.sendMessage(new Message(accountName, false));
-                            receiveThread.interrupt();
-                            break;
-                        } else Client.this.connection.sendMessage(new Message(accountName, text));
-                        System.out.println("Message sent");
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
+                try {
+                    if ("exit".equalsIgnoreCase(text)) {
+                        Client.this.connection.sendMessage(new Message(accountName, false));
+                        receiveThread.interrupt();
+                        break;
+                    } else Client.this.connection.sendMessage(new Message(accountName, text));
+                    System.out.println("Message sent");
+                } catch (IOException ioException) {
+                    //ioException.printStackTrace();
+                    System.out.println("Disconnected from server");
+                    break;
                 }
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
@@ -74,10 +73,10 @@ public class Client {
             while (true) {
                 try {
                     System.out.println(Client.this.connection.readMessage());
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                } catch (IOException | ClassNotFoundException ioException) {
+                    //ioException.printStackTrace();
+                    System.out.println("Disconnected from server");
+                    break;
                 }
             }
         }
